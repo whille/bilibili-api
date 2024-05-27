@@ -495,7 +495,7 @@ class LiveRoom:
         }
         return await Api(**api, credential=self.credential).update_data(**data).result
 
-    async def send_danmaku(self, danmaku: Danmaku, reply_mid: int = None) -> dict:
+    async def send_danmaku(self, danmaku: Danmaku, reply_mid: int = None, room_id: int = None) -> dict:
         """
         直播间发送弹幕
 
@@ -510,7 +510,8 @@ class LiveRoom:
         self.credential.raise_for_no_sessdata()
 
         api = API["operate"]["send_danmaku"]
-        room_id = (await self.get_room_play_info())["room_id"]
+        if room_id is None:
+            room_id = (await self.get_room_play_info())["room_id"]
 
         data = {
             "mode": danmaku.mode,
