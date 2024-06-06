@@ -161,6 +161,17 @@ class LiveRoom:
         )
         return resp
 
+    async def get_room_status(self) -> dict:
+        api = API["info"]["room_status"]
+        params = {
+            "id": self.room_display_id
+        }
+        resp = (
+            await Api(**api, credential=self.credential).update_params(**params).result
+        )
+        self.__ruid = resp["uid"]
+        return resp
+
     async def get_room_play_info(self) -> dict:
         """
         获取房间信息（真实房间号，封禁情况等）
